@@ -22,6 +22,12 @@ export class AppointmentService {
   ) {}
 
   async listAppointments(date: string): Promise<AppointmentResponse[]> {
+    const slotDuration = this.configService.get<number>(
+      'SLOT_DURATION_IN_MINUTES',
+    );
+    const maxSlotPerAppointment = this.configService.get<number>(
+      'MAX_SLOT_PER_APPOINTMENT',
+    );
     const [opStartTime, opEndTime] = this.getOperationalTimes(date);
 
     // Find appointments that are within operational hours
@@ -31,17 +37,25 @@ export class AppointmentService {
       },
     });
 
-    // Map objects for response
-    const result = appointments.map((e) => {
-      const [date, time] = parseDateAndTime(e.startTime);
-      return {
+    const slots: AppointmentResponse[] = [];
+
+    while (opStartTime < opEndTime) {
+      // Check booked slots
+      const bookedSlots = appointments.filter((appointment) => {
+        return appointment.startTime.getTime() === opStartTime.getTime();
+      });
+
+      const [date, time] = parseDateAndTime(opStartTime);
+      slots.push({
         date,
         time,
-        available_slots: 1,
-      };
-    });
+        available_slots: maxSlotPerAppointment - bookedSlots.length,
+      });
 
-    return result;
+      opStartTime.setTime(opStartTime.getTime() + slotDuration * 60000);
+    }
+
+    return slots;
   }
 
   async createAppointment(
