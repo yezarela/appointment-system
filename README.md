@@ -15,6 +15,15 @@ $ yarn install
 
 ## Running the app
 
+For first time run, you'll need to run the migrations:
+
+```bash
+# run all pending migrations
+yarn migration:run
+```
+
+And you can run the app:
+
 ```bash
 # development
 $ yarn start
@@ -31,4 +40,11 @@ $ yarn start:prod
 ```bash
 # unit tests
 $ yarn test
+```
+
+## Development
+
+```bash
+# generate migration based on entity changes
+yarn migration:generate migrations/<migration-name>
 ```
