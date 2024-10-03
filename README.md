@@ -35,6 +35,8 @@ $ yarn start:dev
 $ yarn start:prod
 ```
 
+For live testing purpose, you can import the [Postman collection](Appointments.postman_collection.json) into your postman
+
 ## Test
 
 ```bash
@@ -45,6 +47,9 @@ $ yarn test
 ## Development
 
 ```bash
+# generate module / controller / service
+nest generate <module|controller|service> <name>
+
 # generate migration based on entity changes
 yarn migration:generate migrations/<migration-name>
 ```
