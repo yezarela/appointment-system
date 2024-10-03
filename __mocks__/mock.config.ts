@@ -6,4 +6,5 @@ export const mockConfig: Config = {
   OPERATIONAL_HOUR_START: '09:00',
   OPERATIONAL_HOUR_END: '18:00',
   OPERATIONAL_DAYS: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+  UNAVAILABLE_HOURS: ['12:00'],
 };

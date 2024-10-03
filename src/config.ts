@@ -47,6 +47,12 @@ export class Config {
   @IsNotEmpty()
   @IsMilitaryTime() // Checks if the string is in the format HH:MM.
   OPERATIONAL_HOUR_END: string;
+
+  @IsArray()
+  @ArrayMinSize(1)
+  @IsMilitaryTime({ each: true })
+  @Transform(({ value }) => value.toString().split(',').map(String))
+  UNAVAILABLE_HOURS: string[];
 }
 
 // Validate config values against class-validator decorators

@@ -72,6 +72,8 @@ export class AppointmentService {
     const maxSlotPerAppointment = this.configService.get<number>(
       'MAX_SLOT_PER_APPOINTMENT',
     );
+    const unavailableHours =
+      this.configService.get<string[]>('UNAVAILABLE_HOURS');
 
     const operationalDays =
       this.configService.get<string[]>('OPERATIONAL_DAYS');
@@ -82,6 +84,11 @@ export class AppointmentService {
     const reqEndTime = new Date(reqStartTime);
     reqEndTime.setMinutes(reqEndTime.getMinutes() + slotDuration);
     const reqDay = DAYS[reqStartTime.getDay()];
+
+    // Validate against unavailable hours
+    if (unavailableHours.includes(body.time)) {
+      throw new ForbiddenException('Hour is unavailable');
+    }
 
     // Validate past startTime
     if (reqStartTime < new Date()) {
