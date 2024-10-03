@@ -6,16 +6,21 @@ import {
   IsMilitaryTime,
   IsNotEmpty,
   IsNumber,
+  Max,
+  Min,
   validateSync,
 } from 'class-validator';
 
 export class Config {
   @IsNotEmpty()
   @IsNumber()
+  @Min(5)
   SLOT_DURATION_IN_MINUTES: number;
 
   @IsNotEmpty()
   @IsNumber()
+  @Min(1)
+  @Max(5)
   MAX_SLOT_PER_APPOINTMENT: number;
 
   @IsArray()
