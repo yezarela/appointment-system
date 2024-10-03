@@ -15,7 +15,7 @@ export class Appointment {
   email: string;
 
   @Column()
-  clientName: string;
+  fullName: string;
 
   @Column({ type: 'datetime' })
   startTime: Date;
@@ -28,4 +28,10 @@ export class Appointment {
     default: false,
   })
   isCancelled: boolean;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
