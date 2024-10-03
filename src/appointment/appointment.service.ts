@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Config } from 'src/config';
 import { Appointment } from './model/appointment.entity';
@@ -34,6 +38,7 @@ export class AppointmentService {
     const appointments = await this.appointmentRepository.find({
       where: {
         startTime: Between(opStartTime, opEndTime),
+        isCancelled: false,
       },
     });
 
@@ -97,6 +102,7 @@ export class AppointmentService {
     const appointments = await this.appointmentRepository.find({
       where: {
         startTime: reqStartTime,
+        isCancelled: false,
       },
     });
 
@@ -123,6 +129,29 @@ export class AppointmentService {
       date,
       time,
     };
+  }
+
+  async cancelAppointment(body: CreateAppointmentRequest): Promise<boolean> {
+    const cancelStartTime = new Date(`${body.date}T${body.time}`); // combine to local datetime
+    const appointment = await this.appointmentRepository.findOne({
+      where: {
+        startTime: cancelStartTime,
+        email: body.email,
+        fullName: body.full_name,
+        isCancelled: false,
+      },
+    });
+
+    if (!appointment) {
+      throw new NotFoundException('Data not found');
+    }
+
+    await this.appointmentRepository.save({
+      id: appointment.id,
+      isCancelled: true,
+    });
+
+    return true;
   }
 
   private getOperationalTimes(date: string): Date[] {

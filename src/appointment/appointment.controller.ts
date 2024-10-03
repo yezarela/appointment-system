@@ -22,4 +22,9 @@ export class AppointmentController {
   ): Promise<CreateAppointmentResponse> {
     return this.appointmentService.createAppointment(body);
   }
+
+  @Post('/cancel')
+  cancelAppointment(@Body() body: CreateAppointmentRequest): Promise<boolean> {
+    return this.appointmentService.cancelAppointment(body);
+  }
 }

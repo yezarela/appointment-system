@@ -34,6 +34,34 @@
 			"response": []
 		},
 		{
+			"name": "Cancel Appointment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"full_name\": \"Yesa\",\n    \"email\": \"hi@yesa.com\",\n    \"date\": \"2024-10-03\",\n    \"time\": \"17:30\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/appointments/cancel",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"appointments",
+						"cancel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "List Appointments",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
